@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/android"
+            android:icon="@drawable/ic_android_grey600_24dp"
+            android:title="@string/drawer_first_item_name" />
+        <item
+            android:id="@+id/java"
+            android:icon="@drawable/ic_coffee_grey600_24dp"
+            android:title="@string/drawer_second_item_name" />
+
+    </group>
+
+    <item android:title="@string/drawer_group_name">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:icon="@drawable/ic_settings_grey600_24dp"
+                android:title="@string/drawer_item_settings" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/ic_star_grey600_24dp"
+                android:title="@string/drawer_about_item" />
+        </menu>
+    </item>
+</menu>
