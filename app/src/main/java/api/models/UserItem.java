@@ -18,6 +18,13 @@ public class UserItem {
     @JsonProperty("bdate")
     private String bDate;
 
+    @JsonProperty("photo")
+    private String mPhoto;
+
+    public String getPhoto() {
+        return mPhoto;
+    }
+
     public String getId() {
         return mId;
     }
@@ -41,6 +48,7 @@ public class UserItem {
                 ", mFirstName='" + mFirstName + '\'' +
                 ", mLastName='" + mLastName + '\'' +
                 ", bDate='" + bDate + '\'' +
+                ", mPhoto='" + mPhoto + '\'' +
                 '}';
     }
 }

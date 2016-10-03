@@ -5,7 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="description_header">heder</string>
     <string name="drawer_second_item_name">Java</string>
-    <string name="drawer_first_item_name">Android</string>
+    <string name="drawer_first_item_name">Audio</string>
     <string name="toolbar_search">Search</string>
     <string name="drawer_group_name">Communicate</string>
     <string name="drawer_item_settings">Settings</string>

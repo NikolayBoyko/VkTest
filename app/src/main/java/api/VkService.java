@@ -9,6 +9,7 @@ public interface VkService {
     @GET("users.get")
     Call<ResponseVk> getUser(@Query("user_ids") String userId,
                              @Query("fields") String fields,
+                             @Query("access_token") String access_token,
                              @Query("v") String version);
 
     @GET("audio.get")
@@ -17,3 +18,4 @@ public interface VkService {
                                  @Query("access_token") String access_token,
                                  @Query("v") String version);
 }
+//https://api.vk.com/method/users.get?user_ids=19393076&fields=photo_100&name_case=nom&v=5.8

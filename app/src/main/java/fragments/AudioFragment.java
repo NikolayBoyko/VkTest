@@ -12,16 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.example.developer.vktest.R;
 
 import java.util.List;
 
+import adapters.AudioAdapter;
 import api.Api;
 import api.ResponseAudio;
 import api.VkService;
-import adapters.AudioAdapter;
 import api.models.AudioItem;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +30,7 @@ import retrofit2.Response;
 public class AudioFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
+    private Button mButtonPlay;
     private RecyclerView.LayoutManager mLayoutManager;
     private AudioAdapter mAdapter;
     private String mToken;
@@ -56,11 +57,12 @@ public class AudioFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mToken = getmToken("KEY", getContext());
-        Log.d("TAG", "mToken " + mToken);
+        mButtonPlay = (Button) view.findViewById(R.id.button_play);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        //AudioPlayer.playAudio("https://cs7-1v4.vk-cdn.net/p20/a72c37595fef68.mp3?extra=4fGtwN6_xrPVbljE1tvmjJ6MAD-AlhLnVmBofm8T5415VnE1PeFzK14QlFFvPJE8jp4s7Jwz0ng7qMH3dPZpJ9FV69Ad5uAhtvfZmnw-plBJBezWo4hZhqHkoTZHZRy1FYJ5st2TKg75");
         getAudio();
     }
 
@@ -82,11 +84,12 @@ public class AudioFragment extends Fragment {
                 if (mAudioList != null) {
                     mAdapter = new AudioAdapter(mAudioList);
                     mRecyclerView.setAdapter(mAdapter);
-                    Log.d("TAG", "mAudioList != null ");
+                    //
+
+                    Log.d("TAG", "onResponse audio Url " + response.body().getResponse().getAudioList().get(0).getUrl());
                 } else {
                     Log.d("TAG", "mAudioList = null ");
                 }
-
             }
 
             @Override
