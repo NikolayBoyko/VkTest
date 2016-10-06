@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.developer.vktest.R;
 
@@ -62,34 +63,27 @@ public class AudioFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //AudioPlayer.playAudio("https://cs7-1v4.vk-cdn.net/p20/a72c37595fef68.mp3?extra=4fGtwN6_xrPVbljE1tvmjJ6MAD-AlhLnVmBofm8T5415VnE1PeFzK14QlFFvPJE8jp4s7Jwz0ng7qMH3dPZpJ9FV69Ad5uAhtvfZmnw-plBJBezWo4hZhqHkoTZHZRy1FYJ5st2TKg75");
         getAudio();
     }
 
     public void getAudio() {
 
         VkService service = Api.getClient().create(VkService.class);
-        Call<ResponseAudio> responseAudioVkCall = service.getAudio("19393076", "15", mToken, "5.53");
+        Call<ResponseAudio> responseAudioVkCall = service.getAudio("19393076", "5", mToken, "5.53");
         responseAudioVkCall.enqueue(new Callback<ResponseAudio>() {
             @Override
             public void onResponse(Call<ResponseAudio> call, Response<ResponseAudio> response) {
-
-                Log.d("TAG", "3 responseAudio " + response.body().getResponse().getAudioList().toString());
-                mAudioList = response.body().getResponse().getAudioList();
-                Log.d("TAG", "mAudioList " + mAudioList);
-
-                mLayoutManager = new LinearLayoutManager(getContext());
-                mRecyclerView.setLayoutManager(mLayoutManager);
-
-                if (mAudioList != null) {
+                if (response.body().getResponse().getAudioList() != null) {
+                    mAudioList = response.body().getResponse().getAudioList();
+                    mLayoutManager = new LinearLayoutManager(getContext());
+                    mRecyclerView.setLayoutManager(mLayoutManager);
                     mAdapter = new AudioAdapter(mAudioList);
                     mRecyclerView.setAdapter(mAdapter);
-                    //
-
-                    Log.d("TAG", "onResponse audio Url " + response.body().getResponse().getAudioList().get(0).getUrl());
                 } else {
+                    Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "mAudioList = null ");
                 }
+
             }
 
             @Override

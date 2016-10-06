@@ -9,7 +9,6 @@ public interface VkService {
     @GET("users.get")
     Call<ResponseVk> getUser(@Query("user_ids") String userId,
                              @Query("fields") String fields,
-                             @Query("access_token") String access_token,
                              @Query("v") String version);
 
     @GET("audio.get")
