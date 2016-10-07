@@ -44,31 +44,39 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
 
             @Override
             public void onClick(View view) {
+                if(mediaPlayer.isPlaying()){
+                    mediaPlayer.pause();
 
-                if (length == 0) {
+                } else {
+                    mediaPlayer = new MediaPlayer();
+                    playAudio(audioList.get(position).getUrl());
+                }
+/*
+                if (length == 0 ) {
                     mediaPlayer = new MediaPlayer();
                     playAudio(audioList.get(position).getUrl());
                 } else {
                     mediaPlayer.seekTo(length);
                     mediaPlayer.start();
-                }
+                }*/
 
                 holder.mPlayAudio.setVisibility(view.GONE);
                 holder.mPauseAudio.setVisibility(view.VISIBLE);
             }
         });
 
-        holder.mPauseAudio.setOnClickListener(new View.OnClickListener() {
+       /* holder.mPauseAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 mediaPlayer.pause();
                 length = mediaPlayer.getCurrentPosition();
+
                 holder.mPlayAudio.setVisibility(view.VISIBLE);
                 holder.mPauseAudio.setVisibility(view.GONE);
 
             }
-        });
+        });*/
     }
 
     @Override

@@ -1,5 +1,9 @@
 package activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -7,11 +11,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.vktest.R;
@@ -22,6 +27,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout mDrawerLayout;
     private FragmentTransaction fragmentTransaction;
+    private TextView mNameView;
+    private String mUser;
+    NavigationView navigationView;
+    String token;
 
 
     @Override
@@ -34,8 +43,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onContentChanged() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mUser = getmValue("name", this);
+        token = getmValue("token", this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNameView = (TextView) findViewById(R.id.drawer_header_textView);
+
+        // mNameView.setText(mUser);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
@@ -50,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.drawer_header_textView);
+        nav_user.setText(mUser);
 
         super.onContentChanged();
     }
@@ -96,6 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.main_content, fragment).commit();
+    }
+
+    public String getmValue(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
     }
 
 }

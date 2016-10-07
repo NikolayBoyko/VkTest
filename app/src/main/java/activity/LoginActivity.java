@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -40,7 +39,6 @@ public class LoginActivity extends Activity {
 
             if (url.contains("access_token")) {
                 mToken = url.substring(url.indexOf("=") + 1, url.indexOf("&"));
-                Log.d("TAG", "shouldOverrideUrlLoading token " + mToken);
                 saveUrl(mToken);
                 Intent intent = new Intent(new Intent(context, MainActivity.class));
                 intent.putExtra("token", mToken);
@@ -57,4 +55,6 @@ public class LoginActivity extends Activity {
             editor.putString("KEY", url).apply();
         }
     }
+
+
 }
