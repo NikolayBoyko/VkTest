@@ -12,26 +12,36 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.vktest.R;
+import com.squareup.picasso.Picasso;
 
+import api.Api;
+import api.ResponseVk;
+import api.VkService;
 import fragments.AudioFragment;
+import fragments.FriendsFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
     private FragmentTransaction fragmentTransaction;
-    private TextView mNameView;
-    private String mUser;
-    NavigationView navigationView;
-    String token;
-
+    private String token;
+    private TextView nav_name;
+    private TextView nav_second_name;
+    private ImageView mImageView;
+    private VkService service = Api.getClient().create(VkService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +53,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onContentChanged() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mUser = getmValue("name", this);
+        getUser();
         token = getmValue("token", this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNameView = (TextView) findViewById(R.id.drawer_header_textView);
-
-        // mNameView.setText(mUser);
-
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
@@ -64,9 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View hView =  navigationView.getHeaderView(0);
-        TextView nav_user = (TextView)hView.findViewById(R.id.drawer_header_textView);
-        nav_user.setText(mUser);
+        View hView = navigationView.getHeaderView(0);
+        nav_name = (TextView) hView.findViewById(R.id.drawer_header_textView_name);
+        nav_second_name = (TextView) hView.findViewById(R.id.drawer_header_textView_secondName);
+        mImageView = (ImageView) hView.findViewById(R.id.drawer_header_imageView);
 
         super.onContentChanged();
     }
@@ -93,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.java:
+                replaceFragment(FriendsFragment.newInstance(2));
                 Toast.makeText(this, "Click on Java", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -118,6 +125,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public String getmValue(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(key, null);
+    }
+
+   public void getUser() {
+        Call<ResponseVk> responseVkCall = service.getUser("133508072", "bdate,photo_200", "5.53");
+        responseVkCall.enqueue(new Callback<ResponseVk>() {
+            @Override
+            public void onResponse(Call<ResponseVk> call, Response<ResponseVk> response) {
+                nav_name.setText(response.body().getListUser().get(0).getFirstName());
+                nav_second_name.setText(response.body().getListUser().get(0).getLastName());
+                Picasso.with(getBaseContext())
+                        .load(response.body().getListUser().get(0).getPhoto())
+                        .placeholder(R.drawable.drawer_header_image)
+                        .into(mImageView);
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseVk> call, Throwable t) {
+                Log.d("TAG", "onFailure" + t);
+            }
+
+        });
+
     }
 
 }

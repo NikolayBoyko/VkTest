@@ -16,5 +16,10 @@ public interface VkService {
                                  @Query("count") String count,
                                  @Query("access_token") String access_token,
                                  @Query("v") String version);
+
+    @GET("friends.get")
+    Call<ResponseFriends> getFriends(@Query("order") String order,
+                                     @Query("fields") String fields,
+                                     @Query("access_token") String access_token,
+                                     @Query("v") String version);
 }
-//https://api.vk.com/method/users.get?user_ids=19393076&fields=photo_100&name_case=nom&v=5.8

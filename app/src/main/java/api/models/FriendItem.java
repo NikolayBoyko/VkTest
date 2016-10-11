@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserItem {
+public class FriendItem {
 
     @JsonProperty("id")
     private String mId;
@@ -15,17 +15,13 @@ public class UserItem {
     @JsonProperty("last_name")
     private String mLastName;
 
-    @JsonProperty("bdate")
-    private String bDate;
-
-    @JsonProperty("photo_200")
+    @JsonProperty("photo_100")
     private String mPhoto;
 
-    public String getPhoto() {
-        return mPhoto;
-    }
+    @JsonProperty("online")
+    private String mOnline;
 
-    public String getId() {
+    public String getmId() {
         return mId;
     }
 
@@ -37,18 +33,22 @@ public class UserItem {
         return mLastName;
     }
 
-    public String getBdate() {
-        return bDate;
+    public String getPhoto() {
+        return mPhoto;
+    }
+
+    public String getOnline() {
+        return mOnline;
     }
 
     @Override
     public String toString() {
-        return "UserItem{" +
+        return "FriendItem{" +
                 "mId='" + mId + '\'' +
                 ", mFirstName='" + mFirstName + '\'' +
                 ", mLastName='" + mLastName + '\'' +
-                ", bDate='" + bDate + '\'' +
                 ", mPhoto='" + mPhoto + '\'' +
+                ", mOnline='" + mOnline + '\'' +
                 '}';
     }
 }

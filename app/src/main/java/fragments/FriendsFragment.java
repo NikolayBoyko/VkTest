@@ -8,12 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.developer.vktest.R;
@@ -21,37 +19,35 @@ import com.example.developer.vktest.R;
 import java.util.List;
 
 import adapters.AudioAdapter;
+import adapters.FriendsAdapter;
 import api.Api;
 import api.ResponseAudio;
+import api.ResponseFriends;
 import api.VkService;
-import api.models.AudioItem;
+import api.models.FriendItem;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import util.Util;
 
-public class AudioFragment extends Fragment {
+public class FriendsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private AudioAdapter mAdapter;
+    private List<FriendItem> mFriendsList;
     private String mToken;
-    private String mCount = "7";
 
-    private List<AudioItem> mAudioList;
+    public static FriendsFragment newInstance(Integer integer) {
 
-    public static AudioFragment newInstance(Integer integer) {
-
-        AudioFragment audioFragment = new AudioFragment();
+        FriendsFragment friendsFragment = new FriendsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", integer);
-        audioFragment.setArguments(args);
-        return audioFragment;
+        friendsFragment.setArguments(args);
+        return friendsFragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycler, container, false);
         return view;
     }
@@ -60,38 +56,36 @@ public class AudioFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mToken = getmToken("KEY", getContext());
-        Log.d("TAG", "onViewCreated token " + mToken);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        getAudio();
+        getFriends();
     }
 
-    public void getAudio() {
+    public void getFriends() {
         VkService service = Api.getClient().create(VkService.class);
-        Call<ResponseAudio> responseAudioVkCall = service.getAudio(Util.VK.USER_ID, mCount, mToken, Util.VK.VERSION);
-        responseAudioVkCall.enqueue(new Callback<ResponseAudio>() {
+        Call<ResponseFriends> responseFriendsCall = service.getFriends("random", "photo_100", mToken, Util.VK.VERSION);
+        responseFriendsCall.enqueue(new Callback<ResponseFriends>() {
             @Override
-            public void onResponse(Call<ResponseAudio> call, Response<ResponseAudio> response) {
-                Log.d("TAG", "onResponse response " );
-                Log.d("TAG", "onResponse response " + response.body().getResponse().getAudioList().toString());
+            public void onResponse(Call<ResponseFriends> call, Response<ResponseFriends> response) {
+                Log.d("TAG", " getFriends onResponse" + response.body().getFrindsResponse().getFriendList().get(0).toString());
 
                 if (response.errorBody() == null) {
-                    mAudioList = response.body().getResponse().getAudioList();
-                    mLayoutManager = new LinearLayoutManager(getContext());
+                    mFriendsList = response.body().getFrindsResponse().getFriendList();
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                     mRecyclerView.setLayoutManager(mLayoutManager);
-                    mAdapter = new AudioAdapter(getContext(), mAudioList);
+                    FriendsAdapter mAdapter = new FriendsAdapter(getContext(),mFriendsList);
                     mRecyclerView.setAdapter(mAdapter);
                 } else {
                     Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "mAudioList = null ");
+                    Log.d("TAG", "mFriendsList = null ");
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseAudio> call, Throwable t) {
-                Log.d("TAG", "onFailure responseAudioVkCall " + t.getMessage());
+            public void onFailure(Call<ResponseFriends> call, Throwable t) {
+                Log.d("TAG", " getFriends onFailure");
             }
         });
     }

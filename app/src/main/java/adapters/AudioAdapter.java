@@ -1,8 +1,10 @@
 package adapters;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +23,11 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     private List<AudioItem> audioList;
     private String mArtist = "Artist: ";
     private String mTitle = "Title: ";
-    private MediaPlayer mediaPlayer;
-    private int length;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private int currentPosition = 0;
 
-    public AudioAdapter(List<AudioItem> audioList) {
+
+    public AudioAdapter(Context context, List<AudioItem> audioList) {
         this.audioList = audioList;
     }
 
@@ -36,7 +39,6 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
         holder.mAudioArtist.setText(mArtist + audioList.get(position).getArtist());
         holder.mAudioTitle.setText(mTitle + audioList.get(position).getTitle());
 
@@ -44,39 +46,33 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
 
             @Override
             public void onClick(View view) {
-                if(mediaPlayer.isPlaying()){
-                    mediaPlayer.pause();
-
-                } else {
-                    mediaPlayer = new MediaPlayer();
-                    playAudio(audioList.get(position).getUrl());
-                }
-/*
-                if (length == 0 ) {
-                    mediaPlayer = new MediaPlayer();
-                    playAudio(audioList.get(position).getUrl());
-                } else {
-                    mediaPlayer.seekTo(length);
-                    mediaPlayer.start();
-                }*/
-
                 holder.mPlayAudio.setVisibility(view.GONE);
                 holder.mPauseAudio.setVisibility(view.VISIBLE);
+
+                if (mediaPlayer.getCurrentPosition() != 0) {
+                    Log.d("TAG", "play from currentPosition " + mediaPlayer.getCurrentPosition());
+                    mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
+                    mediaPlayer.start();
+                } else {
+                    playAudio(audioList.get(position).getUrl());
+                    Log.d("TAG", "playAudio " + currentPosition);
+                }
             }
         });
 
-       /* holder.mPauseAudio.setOnClickListener(new View.OnClickListener() {
+        holder.mPauseAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                mediaPlayer.pause();
-                length = mediaPlayer.getCurrentPosition();
-
                 holder.mPlayAudio.setVisibility(view.VISIBLE);
                 holder.mPauseAudio.setVisibility(view.GONE);
 
+                mediaPlayer.pause();
+                // currentPosition = mediaPlayer.getCurrentPosition();
+                Log.d("TAG", "pause " + mediaPlayer.getCurrentPosition());
+
+
             }
-        });*/
+        });
     }
 
     @Override
@@ -110,7 +106,5 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }

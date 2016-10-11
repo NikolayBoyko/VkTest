@@ -6,30 +6,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 import api.models.AudioItem;
+import api.models.FriendItem;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseAudioVk {
+public class ResponseFiendsVk {
 
     @JsonProperty("count")
-    private long mCount;
+    private int mCount;
 
     @JsonProperty("items")
-    private List<AudioItem> mAudioFileList;
+    private List<FriendItem> mFriendList;
 
-    public long getCount() {
+    public int getCount() {
         return mCount;
     }
 
-    public List<AudioItem> getAudioList() {
-        return mAudioFileList;
-
+    public List<FriendItem> getFriendList() {
+        return mFriendList;
     }
 
     @Override
     public String toString() {
-        return "ResponseAudioVk{" +
+        return "ResponseFiendsVk{" +
                 "mCount=" + mCount +
-                ", mAudioFileList=" + mAudioFileList +
+                ", mFriendList=" + mFriendList +
                 '}';
     }
 }
