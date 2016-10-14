@@ -21,7 +21,7 @@ public class LoginActivity extends Activity {
 
         mWebView.setWebViewClient(new MyWebView(this));
 
-        mWebView.loadUrl("https://oauth.vk.com/authorize?client_id=5610917&display=mobile&redirect_uri=https://oauth.vk.com/blank.html&scope=friends,audio&response_type=token&v=5.53&state=123456");
+        mWebView.loadUrl("https://oauth.vk.com/authorize?client_id=5610917&display=mobile&redirect_uri=https://oauth.vk.com/blank.html&scope=friends,audio,messages&response_type=token&v=5.53&state=123456");
     }
 
     class MyWebView extends WebViewClient {
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("KEY", url).apply();
         }
-    }
 
+    }
 
 }

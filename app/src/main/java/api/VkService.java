@@ -13,7 +13,6 @@ public interface VkService {
 
     @GET("audio.get")
     Call<ResponseAudio> getAudio(@Query("owner_id") String owner_id,
-                                 @Query("count") String count,
                                  @Query("access_token") String access_token,
                                  @Query("v") String version);
 
@@ -21,5 +20,9 @@ public interface VkService {
     Call<ResponseFriends> getFriends(@Query("order") String order,
                                      @Query("fields") String fields,
                                      @Query("access_token") String access_token,
+                                     @Query("v") String version);
+
+    @GET("messages.getDialogs")
+    Call<ResponseDialogs> getDialogs(@Query("access_token") String access_token,
                                      @Query("v") String version);
 }

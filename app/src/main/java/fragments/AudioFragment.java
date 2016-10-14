@@ -8,12 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.developer.vktest.R;
@@ -36,7 +34,7 @@ public class AudioFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private AudioAdapter mAdapter;
     private String mToken;
-    private String mCount = "7";
+    private String mCount = "10";
 
     private List<AudioItem> mAudioList;
 
@@ -70,18 +68,17 @@ public class AudioFragment extends Fragment {
 
     public void getAudio() {
         VkService service = Api.getClient().create(VkService.class);
-        Call<ResponseAudio> responseAudioVkCall = service.getAudio(Util.VK.USER_ID, mCount, mToken, Util.VK.VERSION);
+        Call<ResponseAudio> responseAudioVkCall = service.getAudio(Util.VK.USER_ID, mToken, Util.VK.VERSION);
         responseAudioVkCall.enqueue(new Callback<ResponseAudio>() {
             @Override
             public void onResponse(Call<ResponseAudio> call, Response<ResponseAudio> response) {
-                Log.d("TAG", "onResponse response " );
-                Log.d("TAG", "onResponse response " + response.body().getResponse().getAudioList().toString());
+           //     Log.d("TAG", "onResponse audioList Size " + response.body().getResponse().getAudioList().size());
 
                 if (response.errorBody() == null) {
                     mAudioList = response.body().getResponse().getAudioList();
                     mLayoutManager = new LinearLayoutManager(getContext());
                     mRecyclerView.setLayoutManager(mLayoutManager);
-                    mAdapter = new AudioAdapter(getContext(), mAudioList);
+                    mAdapter = new AudioAdapter(mAudioList);
                     mRecyclerView.setAdapter(mAdapter);
                 } else {
                     Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/android"
+            android:id="@+id/Audio"
             android:icon="@drawable/ic_android_grey600_24dp"
             android:title="@string/drawer_first_item_name" />
         <item
-            android:id="@+id/java"
+            android:id="@+id/Friends"
             android:icon="@drawable/ic_coffee_grey600_24dp"
             android:title="@string/drawer_second_item_name" />
 
@@ -15,7 +15,7 @@
     <item android:title="@string/drawer_group_name">
         <menu>
             <item
-                android:id="@+id/settings"
+                android:id="@+id/Dialogs"
                 android:icon="@drawable/ic_settings_grey600_24dp"
                 android:title="@string/drawer_item_settings" />
             <item

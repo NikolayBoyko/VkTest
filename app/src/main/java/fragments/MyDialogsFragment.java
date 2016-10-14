@@ -12,35 +12,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.developer.vktest.R;
 
 import java.util.List;
 
-import adapters.FriendsAdapter;
 import api.Api;
-import api.ResponseFriends;
+import api.models.Dialog;
+import api.ResponseDialogs;
 import api.VkService;
-import api.models.FriendItem;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import util.Util;
 
-public class FriendsFragment extends Fragment {
+public class MyDialogsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private List<FriendItem> mFriendsList;
+    private List<Dialog> mDialogsList;
     private String mToken;
 
-    public static FriendsFragment newInstance(Integer integer) {
+    public static MyDialogsFragment newInstance(Integer integer) {
 
-        FriendsFragment friendsFragment = new FriendsFragment();
+        MyDialogsFragment myDialogsFragment = new MyDialogsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", integer);
-        friendsFragment.setArguments(args);
-        return friendsFragment;
+        myDialogsFragment.setArguments(args);
+        return myDialogsFragment;
     }
 
     @Nullable
@@ -58,38 +56,27 @@ public class FriendsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        getFriends();
+        getDialogsList();
     }
 
-    public void getFriends() {
+    public void getDialogsList() {
         VkService service = Api.getClient().create(VkService.class);
-        Call<ResponseFriends> responseFriendsCall = service.getFriends("random", "photo_100", mToken, Util.VK.VERSION);
-        responseFriendsCall.enqueue(new Callback<ResponseFriends>() {
+        Call<ResponseDialogs> responseDialogsCall = service.getDialogs(mToken,Util.VK.VERSION);
+        responseDialogsCall.enqueue(new Callback<ResponseDialogs>() {
             @Override
-            public void onResponse(Call<ResponseFriends> call, Response<ResponseFriends> response) {
-                Log.d("TAG", " getFriends onResponse" + response.body().getFrindsResponse().getFriendList().get(0).toString());
-
-                if (response.errorBody() == null) {
-                    mFriendsList = response.body().getFrindsResponse().getFriendList();
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                    mRecyclerView.setLayoutManager(mLayoutManager);
-                    FriendsAdapter mAdapter = new FriendsAdapter(getContext(),mFriendsList);
-                    mRecyclerView.setAdapter(mAdapter);
-                } else {
-                    Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "mFriendsList = null ");
-                }
+            public void onResponse(Call<ResponseDialogs> call, Response<ResponseDialogs> response) {
+                Log.d("TAG","onResponse " + response.body().toString());
             }
 
             @Override
-            public void onFailure(Call<ResponseFriends> call, Throwable t) {
-                Log.d("TAG", " getFriends onFailure");
+            public void onFailure(Call<ResponseDialogs> call, Throwable t) {
+                Log.d("TAG","onFailure " + t.toString());
             }
         });
     }
+
     public String getmToken(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(key, null);
     }
-
 }
