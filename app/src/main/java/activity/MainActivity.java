@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView nav_name;
     private TextView nav_second_name;
     private ImageView mImageView;
-    private VkService service = Api.getClient().create(VkService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,17 +93,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.android:
+            case R.id.Audio:
                 replaceFragment(AudioFragment.newInstance(1));
                 Toast.makeText(this, "Click on Android", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.java:
+            case R.id.Friends:
                 replaceFragment(FriendsFragment.newInstance(2));
                 Toast.makeText(this, "Click on Java", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.settings:
+            case R.id.Dialogs:
                 replaceFragment(MyDialogsFragment.newInstance(3));
                 Toast.makeText(this, "Click on Settings", Toast.LENGTH_SHORT).show();
                 break;
@@ -130,7 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
    public void getUser() {
-        Call<ResponseVk> responseVkCall = service.getUser("133508072", "bdate,photo_200", "5.53");
+       VkService service = Api.getClient().create(VkService.class);
+        Call<ResponseVk> responseVkCall = service.getUser("133508072", "bdate,photo_100", "5.53");
         responseVkCall.enqueue(new Callback<ResponseVk>() {
             @Override
             public void onResponse(Call<ResponseVk> call, Response<ResponseVk> response) {

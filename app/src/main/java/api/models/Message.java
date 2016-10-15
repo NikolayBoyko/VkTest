@@ -18,7 +18,7 @@ public class Message {
     private int mOut;
 
     @JsonProperty("user_id")
-    private long mUserId;
+    private String mUserId;
 
     @JsonProperty("read_state")
     private int mRead_state;
@@ -47,7 +47,7 @@ public class Message {
         return mOut;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return mUserId;
     }
 

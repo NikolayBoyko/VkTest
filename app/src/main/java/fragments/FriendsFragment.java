@@ -67,7 +67,6 @@ public class FriendsFragment extends Fragment {
         responseFriendsCall.enqueue(new Callback<ResponseFriends>() {
             @Override
             public void onResponse(Call<ResponseFriends> call, Response<ResponseFriends> response) {
-                Log.d("TAG", " getFriends onResponse" + response.body().getFrindsResponse().getFriendList().get(0).toString());
 
                 if (response.errorBody() == null) {
                     mFriendsList = response.body().getFrindsResponse().getFriendList();

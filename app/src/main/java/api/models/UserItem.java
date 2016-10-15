@@ -18,7 +18,7 @@ public class UserItem {
     @JsonProperty("bdate")
     private String bDate;
 
-    @JsonProperty("photo_200")
+    @JsonProperty("photo_100")
     private String mPhoto;
 
     public String getPhoto() {

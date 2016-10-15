@@ -4,11 +4,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="description_header">heder</string>
-    <string name="drawer_second_item_name">Java</string>
-    <string name="drawer_first_item_name">Audio</string>
+    <string name="drawer_second_item_name">My Friends</string>
+    <string name="drawer_first_item_name">My Audio</string>
     <string name="toolbar_search">Search</string>
     <string name="drawer_group_name">Communicate</string>
-    <string name="drawer_item_settings">Settings</string>
+    <string name="drawer_item_settings">My Dialogs</string>
     <string name="drawer_about_item">About app</string>
     <string name="button_play">Play</string>
     <string name="button_stop">Stop</string>
