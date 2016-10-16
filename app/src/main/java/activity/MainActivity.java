@@ -29,7 +29,7 @@ import api.ResponseVk;
 import api.VkService;
 import fragments.AudioFragment;
 import fragments.FriendsFragment;
-import fragments.MyDialogsFragment;
+import fragments.OverallDialogsFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.Dialogs:
-                replaceFragment(MyDialogsFragment.newInstance(3));
+                replaceFragment(OverallDialogsFragment.newInstance(3));
                 Toast.makeText(this, "Click on Settings", Toast.LENGTH_SHORT).show();
                 break;
 
