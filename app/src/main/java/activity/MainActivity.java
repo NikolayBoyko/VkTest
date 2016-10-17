@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         getUser();
         token = getmValue("token", this);
+        Log.d("TAG", "My Token " + token);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
@@ -128,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return preferences.getString(key, null);
     }
 
-   public void getUser() {
-       VkService service = Api.getClient().create(VkService.class);
+    public void getUser() {
+        VkService service = Api.getClient().create(VkService.class);
         Call<ResponseVk> responseVkCall = service.getUser("133508072", "bdate,photo_200", "5.53");
         responseVkCall.enqueue(new Callback<ResponseVk>() {
             @Override
