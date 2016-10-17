@@ -29,7 +29,7 @@ import api.ResponseVk;
 import api.VkService;
 import fragments.AudioFragment;
 import fragments.FriendsFragment;
-import fragments.OverallDialogsFragment;
+import fragments.DialogsOverallFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.Dialogs:
-                replaceFragment(OverallDialogsFragment.newInstance(3));
+                replaceFragment(DialogsOverallFragment.newInstance(3));
                 Toast.makeText(this, "Click on Settings", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
    public void getUser() {
        VkService service = Api.getClient().create(VkService.class);
-        Call<ResponseVk> responseVkCall = service.getUser("133508072", "bdate,photo_100", "5.53");
+        Call<ResponseVk> responseVkCall = service.getUser("133508072", "bdate,photo_200", "5.53");
         responseVkCall.enqueue(new Callback<ResponseVk>() {
             @Override
             public void onResponse(Call<ResponseVk> call, Response<ResponseVk> response) {
                 nav_name.setText(response.body().getListUser().get(0).getFirstName());
                 nav_second_name.setText(response.body().getListUser().get(0).getLastName());
                 Picasso.with(getBaseContext())
-                        .load(response.body().getListUser().get(0).getPhoto())
+                        .load(response.body().getListUser().get(0).getPhoto_200())
                         .placeholder(R.drawable.drawer_header_image)
                         .into(mImageView);
             }

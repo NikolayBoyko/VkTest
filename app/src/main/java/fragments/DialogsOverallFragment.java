@@ -30,7 +30,7 @@ import retrofit2.Response;
 import util.RecyclerItemClickListener;
 import util.Util;
 
-public class OverallDialogsFragment extends Fragment {
+public class DialogsOverallFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private List<Dialog> mDialogsList;
@@ -38,13 +38,13 @@ public class OverallDialogsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private DialogsAdapter mAdapter;
 
-    public static OverallDialogsFragment newInstance(Integer integer) {
+    public static DialogsOverallFragment newInstance(Integer integer) {
 
-        OverallDialogsFragment overallDialogsFragment = new OverallDialogsFragment();
+        DialogsOverallFragment dialogsOverallFragment = new DialogsOverallFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", integer);
-        overallDialogsFragment.setArguments(args);
-        return overallDialogsFragment;
+        dialogsOverallFragment.setArguments(args);
+        return dialogsOverallFragment;
     }
 
     @Nullable
@@ -62,7 +62,7 @@ public class OverallDialogsFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), "Click on item " + mRecyclerView.getLayoutP, Toast.LENGTH_SHORT).show();
+                replaceFragment(DialogHistoryFragment.newInstance(position, mDialogsList.get(position).getMessage().getUserId()));
             }
         }));
         mRecyclerView.setHasFixedSize(true);

@@ -71,7 +71,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/dialog_last_message"
+                    android:id="@+id/dialog_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp" />

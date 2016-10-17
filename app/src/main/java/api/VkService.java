@@ -27,7 +27,8 @@ public interface VkService {
                                      @Query("v") String version);
 
     @GET("messages.getHistory")
-    Call<ResponseDialogs> getDialogHistory(@Query("access_token") String access_token,
-                                           @Query("v") String version);
+    Call<ResponseDialogHistory> getDialogHistory(@Query("user_id") String userId,
+                                                 @Query("access_token") String access_token,
+                                                 @Query("v") String version);
 
 }

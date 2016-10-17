@@ -19,10 +19,17 @@ public class UserItem {
     private String bDate;
 
     @JsonProperty("photo_100")
-    private String mPhoto;
+    private String mPhoto_100;
 
-    public String getPhoto() {
-        return mPhoto;
+    @JsonProperty("photo_200")
+    private String mPhoto_200;
+
+    public String getPhoto_100() {
+        return mPhoto_100;
+    }
+
+    public String getPhoto_200() {
+        return mPhoto_200;
     }
 
     public String getId() {
@@ -48,7 +55,8 @@ public class UserItem {
                 ", mFirstName='" + mFirstName + '\'' +
                 ", mLastName='" + mLastName + '\'' +
                 ", bDate='" + bDate + '\'' +
-                ", mPhoto='" + mPhoto + '\'' +
+                ", mPhoto_100='" + mPhoto_100 + '\'' +
+                ", mPhoto_200='" + mPhoto_200 + '\'' +
                 '}';
     }
 }

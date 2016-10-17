@@ -19,10 +19,12 @@ import com.example.developer.vktest.R;
 import java.util.List;
 
 import adapters.DialogsAdapter;
+import adapters.DialogsHistoryAdapter;
 import api.Api;
-import api.ResponseDialogs;
+import api.ResponseDialogHistory;
 import api.VkService;
 import api.models.Dialog;
+import api.models.DialogHistoryMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,17 +33,19 @@ import util.Util;
 public class DialogHistoryFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private List<Dialog> mDialogsList;
+    private List<DialogHistoryMessage> mMessageList;
     private String mToken;
     private RecyclerView.LayoutManager mLayoutManager;
+    private static String mUserId;
 
-    public static DialogHistoryFragment newInstance(Integer integer,String userId) {
+    public static DialogHistoryFragment newInstance(Integer integer, String userId) {
 
-        DialogHistoryFragment dialogHistoryFragment = new DialogHistoryFragment();
+        DialogHistoryFragment dialogFragment = new DialogHistoryFragment();
+        mUserId = userId;
         Bundle args = new Bundle();
         args.putInt("someInt", integer);
-        dialogHistoryFragment.setArguments(args);
-        return dialogHistoryFragment;
+        dialogFragment.setArguments(args);
+        return dialogFragment;
     }
 
     @Nullable
@@ -59,6 +63,33 @@ public class DialogHistoryFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        getDialogHistory();
+    }
+
+    public void getDialogHistory() {
+        VkService service = Api.getClient().create(VkService.class);
+        Call<ResponseDialogHistory> responseDialogHistoryCall = service.getDialogHistory(mUserId, mToken, Util.VK.VERSION);
+        responseDialogHistoryCall.enqueue(new Callback<ResponseDialogHistory>() {
+            @Override
+            public void onResponse(Call<ResponseDialogHistory> call, Response<ResponseDialogHistory> response) {
+                if (response.errorBody() == null) {
+                    mMessageList = response.body().getDialogHistoryResponse().getDialogHIstoryList();
+                    mLayoutManager = new LinearLayoutManager(getContext());
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    DialogsHistoryAdapter mAdapter = new DialogsHistoryAdapter(mMessageList, getContext());
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+                    Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "mAudioList = null ");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDialogHistory> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public String getmToken(String key, Context context) {
