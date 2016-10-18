@@ -45,7 +45,7 @@ public class DialogsHistoryAdapter extends RecyclerView.Adapter<DialogsHistoryAd
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mDialogDate.setText(mMessageList.get(position).getmDate());
         holder.mDialogBody.setText(mMessageList.get(position).getmBody());
-        Call<ResponseVk> responseVkCall = service.getUser(mMessageList.get(position).getmUser_id(), mUserPhoto, Util.VK.VERSION);
+        Call<ResponseVk> responseVkCall = service.getUser(mMessageList.get(position).getmFrom_id(), mUserPhoto, Util.VK.VERSION);
         responseVkCall.enqueue(new Callback<ResponseVk>() {
             @Override
             public void onResponse(Call<ResponseVk> call, Response<ResponseVk> response) {
@@ -67,7 +67,7 @@ public class DialogsHistoryAdapter extends RecyclerView.Adapter<DialogsHistoryAd
         return mMessageList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView mDialogFirstName, mDialogDate, mDialogBody;
         private ImageView mDialogFriendPhoto;

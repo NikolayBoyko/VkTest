@@ -31,14 +31,13 @@ public interface VkService {
                                                  @Query("access_token") String access_token,
                                                  @Query("v") String version);
 
+    @GET("messages.send")
+    Call<ResponseSendMessage> sendMessage(@Query("user_id") String userId,
+                                          @Query("message") String message,
+                                          @Query("access_token") String token,
+                                          @Query("v") String version);
+
     @GET("client_id=5610917&client_secret=so4s92L8QlsVSUqi841y&v=5.58&grant_type=client_credentials")
     Call getServiceToken();
-
-/*@Query("client_id") String app_id,
-                         @Query("client_secret") String app_secret_key,
-                         @Query("grant_type") String grant_type,
-                         @Query("v") String version*/
-
-    /*client_id= + CLIENT_ID + &client_secret= + CLIENT_SECRET + &v=5.58&grant_type=client_credentials*/
 
 }

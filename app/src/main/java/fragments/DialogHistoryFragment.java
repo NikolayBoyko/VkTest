@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.developer.vktest.R;
@@ -22,6 +24,7 @@ import adapters.DialogsAdapter;
 import adapters.DialogsHistoryAdapter;
 import api.Api;
 import api.ResponseDialogHistory;
+import api.ResponseSendMessage;
 import api.VkService;
 import api.models.Dialog;
 import api.models.DialogHistoryMessage;
@@ -35,8 +38,10 @@ public class DialogHistoryFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private List<DialogHistoryMessage> mMessageList;
     private String mToken;
-    private RecyclerView.LayoutManager mLayoutManager;
     private static String mUserId;
+    private VkService service;
+    private Button mButtonSendMessage;
+    private EditText mEditTextMessage;
 
     public static DialogHistoryFragment newInstance(Integer integer, String userId) {
 
@@ -51,30 +56,38 @@ public class DialogHistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler, container, false);
-        return view;
+        return inflater.inflate(R.layout.chat, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mToken = getmToken("KEY", getContext());
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_dialog_list);
+        mButtonSendMessage = (Button) view.findViewById(R.id.send_message);
+        mEditTextMessage = (EditText) view.findViewById(R.id.message);
+        mButtonSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage(mUserId, mEditTextMessage.getText().toString(), mToken, Util.VK.VERSION);
+                mEditTextMessage.setText("");
+                getDialogHistory();
+            }
+        });
         getDialogHistory();
     }
 
     public void getDialogHistory() {
-        VkService service = Api.getClient().create(VkService.class);
+        service = Api.getClient().create(VkService.class);
         Call<ResponseDialogHistory> responseDialogHistoryCall = service.getDialogHistory(mUserId, mToken, Util.VK.VERSION);
         responseDialogHistoryCall.enqueue(new Callback<ResponseDialogHistory>() {
             @Override
             public void onResponse(Call<ResponseDialogHistory> call, Response<ResponseDialogHistory> response) {
                 if (response.errorBody() == null) {
                     mMessageList = response.body().getDialogHistoryResponse().getDialogHIstoryList();
-                    mLayoutManager = new LinearLayoutManager(getContext());
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                    mLayoutManager.setReverseLayout(true);
+                    mLayoutManager.setStackFromEnd(true);
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     DialogsHistoryAdapter mAdapter = new DialogsHistoryAdapter(mMessageList, getContext());
                     mRecyclerView.setAdapter(mAdapter);
@@ -86,10 +99,24 @@ public class DialogHistoryFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseDialogHistory> call, Throwable t) {
-
             }
         });
+    }
 
+    public void sendMessage(String userId, String message, String token, String version) {
+        service = Api.getClient().create(VkService.class);
+        Call<ResponseSendMessage> responseSendMessageCall = service.sendMessage(userId, message, token, version);
+        responseSendMessageCall.enqueue(new Callback<ResponseSendMessage>() {
+            @Override
+            public void onResponse(Call<ResponseSendMessage> call, Response<ResponseSendMessage> response) {
+                Log.d("TAG", " sendMessage onResponse " + response.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseSendMessage> call, Throwable t) {
+                Log.d("TAG", " sendMessage onFailure " + t);
+            }
+        });
     }
 
     public String getmToken(String key, Context context) {

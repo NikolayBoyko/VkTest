@@ -41,7 +41,6 @@ public class SplashActivity extends Activity {
         super.onContentChanged();
         mToken = getmToken("KEY", this);
         Log.d("TAG", "onCreate mToken " + mToken);
-        getClientToken();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

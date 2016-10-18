@@ -60,9 +60,9 @@ public class AudioFragment extends Fragment {
         mToken = getmToken("KEY", getContext());
         Log.d("TAG", "onViewCreated token " + mToken);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        //mRecyclerView.setHasFixedSize(true);
+        //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        //mRecyclerView.setLayoutManager(mLayoutManager);
         getAudio();
     }
 
